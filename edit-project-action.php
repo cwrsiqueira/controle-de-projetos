@@ -12,11 +12,11 @@ if (empty($dados['nome'])) {
 
 $dados['faturamento'] = str_replace(",", ".", str_replace(".", "", $dados['faturamento']));
 
-$sql = $pdo->prepare("UPDATE projetos SET nome = :nome, descricao = :descricao, inicio = :inicio, andamento = :andamento, encerramento = :encerramento, monetizacao = :monetizacao, faturamento = :faturamento, obs = :obs WHERE id = :id");
+$sql = $pdo->prepare("UPDATE projetos SET nome = :nome, descricao = :descricao, inicio = :inicio, etapa = :etapa, encerramento = :encerramento, monetizacao = :monetizacao, faturamento = :faturamento, obs = :obs WHERE id = :id");
 $sql->bindValue(":nome", $dados['nome']);
 $sql->bindValue(":descricao", $dados['descricao']);
 $sql->bindValue(":inicio", $dados['inicio']);
-$sql->bindValue(":andamento", $dados['andamento']);
+$sql->bindValue(":etapa", $dados['etapa']);
 $sql->bindValue(":encerramento", $dados['encerramento']);
 $sql->bindValue(":monetizacao", $dados['monetizacao']);
 $sql->bindValue(":faturamento", $dados['faturamento']);

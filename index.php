@@ -4,14 +4,24 @@ session_start();
 include_once "header.php";
 include "conn.php";
 
-$busca = " WHERE arquivado = 0";
+$busca = " WHERE p.arquivado = 0";
 $search = filter_input(INPUT_GET, 'search');
 if (!empty($search)) {
-    $busca = " WHERE arquivado = 1";
+    $busca = " WHERE p.arquivado = 1";
 }
 
 $projetos = [];
-$sql = $pdo->query("SELECT * FROM projetos $busca ORDER BY faturamento DESC");
+$sql = $pdo->query("SELECT
+    p.*,
+    e.nome as andamento,
+    e.nivel as etapa,
+    e.cor
+    FROM projetos p
+    LEFT JOIN etapas e ON p.etapa = e.nivel
+    $busca
+    ORDER BY e.nivel DESC, p.faturamento DESC,  p.nome ASC
+");
+
 if ($sql->rowCount() > 0) {
     $projetos = $sql->fetchAll();
 }
@@ -53,7 +63,7 @@ foreach ($projetos as $projeto) {
         <table class="table table">
             <thead>
                 <tr>
-                    <th>#ID</th>
+                    <th>Etapa</th>
                     <th>Nome</th>
                     <th>Descrição</th>
                     <th>Início</th>
@@ -68,7 +78,7 @@ foreach ($projetos as $projeto) {
             <tbody>
                 <?php foreach ($projetos as $projeto) : ?>
                     <tr>
-                        <td><?= $projeto['id']; ?></td>
+                        <td><i class="fa-solid fa-stopwatch fa-xl" style="color: <?= $projeto['cor'] ?>;"></i></td>
                         <td><?= $projeto['nome']; ?></td>
                         <td><?= $projeto['descricao']; ?></td>
                         <td><?= date("d/m/Y", strtotime($projeto['inicio'])); ?></td>

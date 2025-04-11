@@ -1,6 +1,11 @@
 <?php
 session_start();
+include "conn.php";
 include_once "header.php";
+
+$sql = $pdo->query("SELECT * FROM etapas ORDER BY nivel ASC");
+$etapas = $sql->fetchAll(PDO::FETCH_ASSOC);
+
 ?>
 
 <div class="container">
@@ -38,8 +43,12 @@ include_once "header.php";
                 </div>
                 <div class="col-sm">
                     <div class="form-group">
-                        <label for="andamento" class="form-label">Andamento</label>
-                        <input type="text" class="form-control" id="andamento" name="andamento">
+                        <label for="etapa" class="form-label">Andamento</label>
+                        <select name="etapa" id="etapa" class="form-control">
+                            <?php foreach ($etapas as $etapa) : ?>
+                                <option value="<?= $etapa['nivel'] ?>"><?= $etapa['nome'] ?></option>
+                            <?php endforeach; ?>
+                        </select>
                     </div>
                 </div>
                 <div class="col-sm">
