@@ -11,7 +11,7 @@ if (!empty($search)) {
 }
 
 $projetos = [];
-$sql = $pdo->query("SELECT * FROM projetos $busca");
+$sql = $pdo->query("SELECT * FROM projetos $busca ORDER BY faturamento DESC");
 if ($sql->rowCount() > 0) {
     $projetos = $sql->fetchAll();
 }
